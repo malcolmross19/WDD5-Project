@@ -64,7 +64,7 @@ class App extends Component {
   toggleInfo(){
     this.toggleClock();
     this.setState({
-      songInfoHidden: !this.state.songInfoHidden
+      songInfoHidden: !this.state.songInfoHidden,
     });
   }
 
@@ -75,6 +75,9 @@ class App extends Component {
       this.toggleClock();
     } else {
       this.toggleInfo();
+      this.setState({
+        answer: ''
+      });
     }
   }
 
@@ -92,24 +95,26 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <div className="MainHeader">
         {!this.state.loggedIn &&
-          <div className="MainHeader">
+          <div>
             <h1>Login to Spotify to use Name That Tune</h1>
           </div>}
 
           {this.state.loggedIn &&
             <div>
-              <h1 className="MainHeader">Name That Tune</h1>
+              <h1>Name That Tune</h1>
             </div>}
 
           <a href="http://localhost:8888">Request Access From Spotify</a>
+        </div>
 
-          <div>
+          <div className="Body">
             <hr />
             {this.state.loggedIn && !this.state.clockHidden &&
                 <ReactCountdownClock
                   seconds={30}
-                  color='#34E543'
+                  color='#5CC8FF'
                   alpha={0.9}
                   size={720}
                   onComplete={() => this.toggleInfo()}
@@ -130,7 +135,7 @@ class App extends Component {
             {this.state.loggedIn && !this.state.clockHidden &&
               <form onSubmit={this.handleSubmit}>
                 <label>
-                  <input type="text" value={this.state.answer} onChange={this.handleChange} />
+                  <input type="text" value={this.state.answer} placeholder="Enter Your Answer Here" onChange={this.handleChange} />
                 </label>
                 <input type="submit" value="Check Answer" />
               </form>}
@@ -146,7 +151,7 @@ class App extends Component {
             <br />
 
             {this.state.loggedIn &&
-              <button onClick={() => this.buttonClick()}>
+              <button className="NowPlayingButton" onClick={() => this.buttonClick()}>
                 Check Now Playing
               </button>
             }
