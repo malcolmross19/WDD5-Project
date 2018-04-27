@@ -19,13 +19,15 @@ class App extends Component {
       nowPlaying: { name: 'Not Checked', albumArt: ''},
       currentCount: 5,
       clockHidden: true,
-      songInfoHidden: true
+      songInfoHidden: true,
+      answer: ''
     }
     this.getNowPlaying = this.getNowPlaying.bind(this);
     this.getHashParams = this.getHashParams.bind(this);
     this.toggleClock = this.toggleClock.bind(this);
     this.toggleInfo = this.toggleInfo.bind(this);
-    this.searchTracks = this.searchTracks.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   getNowPlaying(){
@@ -38,19 +40,7 @@ class App extends Component {
             albumArt: response.item.album.images[0].url
           }
       });
-      this.searchTracks();
     })
-  }
-
-  searchTracks(){
-    var trackName = this.state.nowPlaying.name;
-    var searchTerm = trackName.split(' ', 1);
-    spotifyApi.searchTracks(searchTerm)
-    .then((data) => {
-      console.log('Search by "' + searchTerm + '"', data.body);
-    }, function(err) {
-      console.error(err);
-    });
   }
 
   getHashParams(){
@@ -80,37 +70,87 @@ class App extends Component {
 
   buttonClick(e){
     this.getNowPlaying();
-    this.toggleClock();
+
+    if(this.state.songInfoHidden){
+      this.toggleClock();
+    } else {
+      this.toggleInfo();
+    }
+  }
+
+  handleChange(event){
+    this.setState({
+      answer: event.target.value
+    });
+  }
+
+  handleSubmit(event){
+    event.preventDefault();
+    this.toggleInfo();
   }
 
   render() {
     return (
       <div className="App">
-        <h1>Login to Spotify to use Name That Tune</h1>
-        <a href="http://localhost:8888">Login to Spotify</a>
+        {!this.state.loggedIn &&
+          <div className="MainHeader">
+            <h1>Login to Spotify to use Name That Tune</h1>
+          </div>}
+
+          {this.state.loggedIn &&
+            <div>
+              <h1 className="MainHeader">Name That Tune</h1>
+            </div>}
+
+          <a href="http://localhost:8888">Request Access From Spotify</a>
+
           <div>
+            <hr />
             {this.state.loggedIn && !this.state.clockHidden &&
-              <ReactCountdownClock
-                seconds={5}
-                color='#34E543'
-                alpha={0.9}
-                size={720}
-                onComplete={() => this.toggleInfo()}
-              />}
+                <ReactCountdownClock
+                  seconds={30}
+                  color='#34E543'
+                  alpha={0.9}
+                  size={720}
+                  onComplete={() => this.toggleInfo()}
+                />}
             {this.state.loggedIn && !this.state.songInfoHidden &&
               <div>
-                Now Playing: { this.state.nowPlaying.name }
+                <h1 className="Header">How Did You Do?</h1>
+                <div className="NowPlaying">Now Playing: { this.state.nowPlaying.name }</div>
               </div>}
-              {this.state.loggedIn && !this.state.songInfoHidden &&
+
+            <br />
+
+            {this.state.loggedIn && !this.state.songInfoHidden &&
               <div>
                 <img src={this.state.nowPlaying.albumArt} style={{ height: 650 }}/>
               </div>}
+
+            {this.state.loggedIn && !this.state.clockHidden &&
+              <form onSubmit={this.handleSubmit}>
+                <label>
+                  <input type="text" value={this.state.answer} onChange={this.handleChange} />
+                </label>
+                <input type="submit" value="Check Answer" />
+              </form>}
+
+            <br />
+
+            {this.state.loggedIn && !this.state.songInfoHidden &&
+              <div>
+                <h1>Your Answer:<br /></h1>
+                <div className="Answer">{this.state.answer}</div>
+              </div>}
+
+            <br />
+
             {this.state.loggedIn &&
               <button onClick={() => this.buttonClick()}>
                 Check Now Playing
               </button>
             }
-        </div>
+          </div>
       </div>
     );
   }
