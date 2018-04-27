@@ -36,7 +36,11 @@ div, button {
 }
 
 div.react-countdown-clock {
-  margin-left: 300px;
+  width: 50% !important;
+}
+
+canvas {
+  margin: auto;
 }
 
 .NowPlayingButton {
