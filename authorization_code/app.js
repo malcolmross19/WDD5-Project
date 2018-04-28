@@ -14,7 +14,7 @@ var cookieParser = require('cookie-parser');
 
 var client_id = '04d4888c98c2435d94f4355cfec80f42'; // Your client id
 var client_secret = '42eaebf2730545c39b62ce4e75610cb2'; // Your secret
-var redirect_uri = 'https://malcolmross19.github.io/project'; // Your redirect uri
+var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
