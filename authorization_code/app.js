@@ -14,7 +14,7 @@ var cookieParser = require('cookie-parser');
 
 var client_id = '04d4888c98c2435d94f4355cfec80f42'; // Your client id
 var client_secret = '42eaebf2730545c39b62ce4e75610cb2'; // Your secret
-var redirect_uri = 'http://127.0.0.1:8888/api/spotify'; // Your redirect uri
+var redirect_uri = 'http://malcolmross19.github.io/project/'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
@@ -102,7 +102,7 @@ app.get('/callback', function(req, res) {
         });
 
         // we can also pass the token to the browser to make requests from there
-        res.redirect('http://127.0.0.1:8888/api/spotify/#' +
+        res.redirect('http://malcolmross19.github.io/project/#' +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
