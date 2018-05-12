@@ -8,11 +8,18 @@ const spotifyApi = new SpotifyWebApi();
 class App extends Component {
     constructor(){
     super();
-    const params = this.getHashParams();
-    const token = params.access_token;
-    if (token) {
-      spotifyApi.setAccessToken(token);
-    }
+    {/*
+      const params = this.getHashParams();
+      const token = params.access_token;
+      if (token) {
+        spotifyApi.setAccessToken(token);
+      }
+    */}
+    
+    const apiEndPoint = 'http://www.last.fm/api/auth/?api_key=';
+    const apiKey = '586ee31c0a920bc5bdb2e795d7cf0f53';
+    const sharedSecret = '3043fa35e9e0ad0d75ceae3a4227fe86';
+
     this.state = {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', albumArt: ''},
@@ -105,7 +112,7 @@ class App extends Component {
               <h1>Name That Tune</h1>
             </div>}
 
-          <a href="http://localhost:8888">Request Access From Spotify</a>
+          <a href="http://malcolmross19.github.io/project">Request Access From Spotify</a>
         </div>
 
           <div className="Body">
